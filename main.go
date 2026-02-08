@@ -21,7 +21,7 @@ func main() {
 	}
 
 	var csv [][]interface{}
-	updateCSVWithJSON(data, "root.", &csv)
+	updateCSVWithJSON(data, "", &csv)
 
 	fmt.Println(csv)
 }
