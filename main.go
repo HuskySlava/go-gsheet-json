@@ -20,20 +20,20 @@ func main() {
 		log.Fatal("failed to parse json", err)
 	}
 
-	var csv [][]interface{}
-	updateCSVWithJSON(data, "", &csv)
+	var gsheet [][]interface{}
+	updateGSheetWithJSON(data, "", &gsheet)
 
-	fmt.Println(csv)
+	fmt.Println(gsheet)
 }
 
-func updateCSVWithJSON(json interface{}, prefix string, csv *[][]interface{}) *[][]interface{} {
+func updateGSheetWithJSON(json interface{}, prefix string, csv *[][]interface{}) *[][]interface{} {
 
 	m, _ := json.(map[string]interface{})
 
 	for k, v := range m {
 		switch v.(type) {
 		case map[string]interface{}:
-			updateCSVWithJSON(v, prefix+k+".", csv)
+			updateGSheetWithJSON(v, prefix+k+".", csv)
 		default:
 			row := []interface{}{
 				prefix + k,
