@@ -1,0 +1,13 @@
+# OS
+.DS_Store
+
+# Enviromet
+.env
+
+# IDE
+.idea
+tmp
+
+# Go build output
+/bin/
+/releases/
