@@ -12,7 +12,7 @@ func handleJSONObject(o interface{}, prefix string) {
 	for k, v := range m {
 		switch v.(type) {
 		case map[string]interface{}:
-			handleJSONObject(v, prefix+"."+k)
+			handleJSONObject(v, prefix+k+".")
 		case string:
 			fmt.Printf("Key: %s is a STRING: %s\n", prefix+k, v)
 		case float64:
@@ -36,6 +36,6 @@ func main() {
 		log.Fatal("failed to parse json", err)
 	}
 
-	handleJSONObject(data, "")
+	handleJSONObject(data, "root.")
 
 }
