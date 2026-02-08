@@ -7,22 +7,6 @@ import (
 	"os"
 )
 
-func handleJSONObject(o interface{}, prefix string) {
-	m, _ := o.(map[string]interface{})
-	for k, v := range m {
-		switch v.(type) {
-		case map[string]interface{}:
-			handleJSONObject(v, prefix+k+".")
-		case string:
-			fmt.Printf("Key: %s is a STRING: %s\n", prefix+k, v)
-		case float64:
-			fmt.Printf("Key: %s is a NUMBER: %f\n", prefix+k, v)
-		default:
-			fmt.Printf("Key: %s is something else (%T)\n", prefix+k, v)
-		}
-	}
-}
-
 func main() {
 	file, err := os.ReadFile("./test.json")
 	if err != nil {
@@ -36,6 +20,28 @@ func main() {
 		log.Fatal("failed to parse json", err)
 	}
 
-	handleJSONObject(data, "root.")
+	var csv [][]interface{}
+	updateCSVWithJSON(data, "root.", &csv)
 
+	fmt.Println(csv)
+}
+
+func updateCSVWithJSON(json interface{}, prefix string, csv *[][]interface{}) *[][]interface{} {
+
+	m, _ := json.(map[string]interface{})
+
+	for k, v := range m {
+		switch v.(type) {
+		case map[string]interface{}:
+			updateCSVWithJSON(v, prefix+k+".", csv)
+		default:
+			row := []interface{}{
+				prefix + k,
+				v,
+			}
+			*csv = append(*csv, row)
+		}
+	}
+
+	return csv
 }
