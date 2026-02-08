@@ -26,22 +26,23 @@ func main() {
 	fmt.Println(gsheet)
 }
 
-func updateGSheetWithJSON(json interface{}, prefix string, csv *[][]interface{}) *[][]interface{} {
-
-	m, _ := json.(map[string]interface{})
-
-	for k, v := range m {
-		switch v.(type) {
-		case map[string]interface{}:
-			updateGSheetWithJSON(v, prefix+k+".", csv)
-		default:
-			row := []interface{}{
-				prefix + k,
-				v,
+func updateGSheetWithJSON(data interface{}, prefix string, gsheet *[][]interface{}) {
+	switch v := data.(type) {
+	case map[string]interface{}:
+		for k, val := range v {
+			newKey := k
+			if prefix != "" {
+				newKey = prefix + "." + k
 			}
-			*csv = append(*csv, row)
+			updateGSheetWithJSON(val, newKey, gsheet)
 		}
+	case []interface{}:
+		for i, val := range v {
+			newKey := fmt.Sprintf("%s.%d", prefix, i)
+			updateGSheetWithJSON(val, newKey, gsheet)
+		}
+	default:
+		row := []interface{}{prefix, v}
+		*gsheet = append(*gsheet, row)
 	}
-
-	return csv
 }
