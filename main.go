@@ -22,6 +22,12 @@ func main() {
 	}
 
 	flatten := convert.FlattenJSONToRows(data)
+	fmt.Println("Flatten:", flatten)
 
-	fmt.Println(flatten)
+	slices := convert.RowsToSlices(flatten)
+	unflatten, err := convert.UnflattenRowsToJSON(slices)
+	if err != nil {
+		log.Fatal("Failed to parse rows")
+	}
+	fmt.Println("Flatten:", unflatten)
 }
