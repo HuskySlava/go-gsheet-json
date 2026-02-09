@@ -21,6 +21,8 @@ func UnflattenRowsToJSON(rows [][]interface{}) ([]byte, error) {
 		parts := strings.Split(key, ".")
 		current := root
 
+		// Check "part" within the current map - if it's a nested map.
+		// If it doesn't exist or isn't a map, create it
 		for _, part := range parts[:len(parts)-1] {
 			next, exists := current[part].(map[string]interface{})
 			if !exists {
