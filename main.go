@@ -26,7 +26,7 @@ func main() {
 	fmt.Println(gsheet)
 }
 
-func updateGSheetWithJSON(data interface{}, prefix string, gsheet *[][]interface{}) {
+func flattenJSONToRows(data interface{}, prefix string, gsheet *[][]interface{}) {
 	switch v := data.(type) {
 	// Handle objects, recursively
 	case map[string]interface{}:
@@ -35,13 +35,13 @@ func updateGSheetWithJSON(data interface{}, prefix string, gsheet *[][]interface
 			if prefix != "" {
 				newKey = prefix + "." + k
 			}
-			updateGSheetWithJSON(val, newKey, gsheet)
+			flattenJSONToRows(val, newKey, gsheet)
 		}
 	// Handle arrays, recursively
 	case []interface{}:
 		for i, val := range v {
 			newKey := fmt.Sprintf("%s.%d", prefix, i)
-			updateGSheetWithJSON(val, newKey, gsheet)
+			flattenJSONToRows(val, newKey, gsheet)
 		}
 	default:
 		// Append key, value to a row
