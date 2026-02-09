@@ -30,4 +30,16 @@ func main() {
 		log.Fatal("Failed to parse rows")
 	}
 	fmt.Println("Flatten:", string(unflatten))
+
+	badSlices := [][]interface{}{{"a.b.c", "lala", "extra"}}
+	_, err = convert.UnflattenRowsToJSON(badSlices)
+	if err != nil {
+		fmt.Println("badSlices validation err:", err)
+	}
+
+	badSlices = [][]interface{}{{123, "lala"}}
+	_, err = convert.UnflattenRowsToJSON(badSlices)
+	if err != nil {
+		fmt.Println("badSlices validation err:", err)
+	}
 }
