@@ -16,6 +16,10 @@ func validateRows(rows [][]interface{}) error {
 		if len(v) != 2 {
 			return fmt.Errorf("row %d: invalid number of columns, expected: 2, got %d", i, len(v))
 		}
+		_, ok := v[0].(string)
+		if !ok {
+			return fmt.Errorf("row %d: invalid key type, expected: string, got %T", i, v[0])
+		}
 	}
 	return nil
 }
