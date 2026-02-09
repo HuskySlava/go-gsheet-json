@@ -2,11 +2,6 @@ package convert
 
 import "fmt"
 
-type Row struct {
-	Key   string
-	Value interface{}
-}
-
 func FlattenJSONToRows(data interface{}) []Row {
 	var rows []Row
 	flatten(data, "", &rows)
