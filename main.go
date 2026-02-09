@@ -29,5 +29,5 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to parse rows")
 	}
-	fmt.Println("Flatten:", unflatten)
+	fmt.Println("Flatten:", string(unflatten))
 }
