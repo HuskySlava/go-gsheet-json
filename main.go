@@ -21,7 +21,7 @@ func main() {
 	}
 
 	var gsheet [][]interface{}
-	updateGSheetWithJSON(data, "", &gsheet)
+	flattenJSONToRows(data, "", &gsheet)
 
 	fmt.Println(gsheet)
 }
