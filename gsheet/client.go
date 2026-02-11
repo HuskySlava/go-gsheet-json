@@ -17,7 +17,7 @@ func NewClient(cfg *config.Config) (*Client, error) {
 	defer cancel()
 
 	srv, err := sheets.NewService(ctx,
-		option.WithCredentialsFile("credentials.json"),
+		option.WithAuthCredentialsFile(option.ServiceAccount, cfg.ServiceAccountFilePath),
 		option.WithScopes(sheets.SpreadsheetsScope),
 	)
 

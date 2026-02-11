@@ -8,7 +8,8 @@ import (
 )
 
 type Config struct {
-	Timeout time.Duration `yaml:"timeout"`
+	Timeout                time.Duration `yaml:"timeout"`
+	ServiceAccountFilePath string        `yaml:"googleServiceAccountFilePath"`
 }
 
 func Load(path string) (*Config, error) {
