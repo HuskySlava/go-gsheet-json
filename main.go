@@ -1,45 +1,25 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"go-sheet-json/convert"
+	"context"
+	"go-sheet-json/config"
+	"go-sheet-json/gsheet"
 	"log"
-	"os"
 )
 
 func main() {
-	file, err := os.ReadFile("./test.json")
+	cfg, err := config.Load("config.yaml")
 	if err != nil {
-		fmt.Println("error", err)
+		log.Fatal("Failed to load config: ", err)
 	}
 
-	var data interface{}
+	ctx, cancel := context.WithTimeout(context.Background(), cfg.Timeout)
+	defer cancel()
 
-	err = json.Unmarshal(file, &data)
+	gsheetClient, err := gsheet.NewClient(ctx, cfg)
 	if err != nil {
-		log.Fatal("failed to parse json", err)
+		log.Fatal("Failed to initialize google sheet client:", err)
 	}
 
-	flatten := convert.FlattenJSONToRows(data)
-	fmt.Println("Flatten:", flatten)
-
-	slices := convert.RowsToSlices(flatten)
-	unflatten, err := convert.UnflattenRowsToJSON(slices)
-	if err != nil {
-		log.Fatal("Failed to parse rows")
-	}
-	fmt.Println("Flatten:", string(unflatten))
-
-	badSlices := [][]interface{}{{"a.b.c", "lala", "extra"}}
-	_, err = convert.UnflattenRowsToJSON(badSlices)
-	if err != nil {
-		fmt.Println("badSlices validation err:", err)
-	}
-
-	badSlices = [][]interface{}{{123, "lala"}}
-	_, err = convert.UnflattenRowsToJSON(badSlices)
-	if err != nil {
-		fmt.Println("badSlices validation err:", err)
-	}
+	gsheetClient.Test()
 }
