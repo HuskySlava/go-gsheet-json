@@ -28,6 +28,14 @@ func NewClient(ctx context.Context, cfg *config.Config) (*Client, error) {
 	}, nil
 }
 
+func (c *Client) ReadSheetRows(spreadsheetID string, sheetRange string) ([][]interface{}, error) {
+	res, err := c.service.Spreadsheets.Values.Get(spreadsheetID, sheetRange).Do()
+	if err != nil {
+		return nil, fmt.Errorf("unable to read spreadsheet: %w", err)
+	}
+	return res.Values, nil
+}
+
 func (c *Client) Test() {
 	fmt.Println("Hello")
 }
