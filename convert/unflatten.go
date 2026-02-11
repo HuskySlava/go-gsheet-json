@@ -6,13 +6,13 @@ import (
 	"strings"
 )
 
-func UnflattenRowsToJSON(rows [][]interface{}) ([]byte, error) {
+func UnflattenRowsToJSON(rows [][]any) ([]byte, error) {
 	err := validateRows(rows)
 	if err != nil {
 		return nil, fmt.Errorf("unable to parse rows to json: %w", err)
 	}
 
-	root := map[string]interface{}{}
+	root := map[string]any{}
 
 	for _, v := range rows {
 		key := v[0].(string)
@@ -24,9 +24,9 @@ func UnflattenRowsToJSON(rows [][]interface{}) ([]byte, error) {
 		// Check "part" within the current map - if it's a nested map.
 		// If it doesn't exist or isn't a map, create it
 		for _, part := range parts[:len(parts)-1] {
-			next, exists := current[part].(map[string]interface{})
+			next, exists := current[part].(map[string]any)
 			if !exists {
-				next = map[string]interface{}{}
+				next = map[string]any{}
 				current[part] = next
 			}
 			current = next
@@ -38,7 +38,7 @@ func UnflattenRowsToJSON(rows [][]interface{}) ([]byte, error) {
 	return json.MarshalIndent(root, "", "  ")
 }
 
-func validateRows(rows [][]interface{}) error {
+func validateRows(rows [][]any) error {
 	for i, v := range rows {
 		if len(v) != 2 {
 			return fmt.Errorf("row %d: invalid number of columns, expected: 2, got %d", i, len(v))

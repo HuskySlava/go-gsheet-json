@@ -2,16 +2,16 @@ package convert
 
 import "fmt"
 
-func FlattenJSONToRows(data interface{}) []Row {
+func FlattenJSONToRows(data any) []Row {
 	var rows []Row
 	flatten(data, "", &rows)
 	return rows
 }
 
-func flatten(data interface{}, prefix string, rows *[]Row) {
+func flatten(data any, prefix string, rows *[]Row) {
 	switch v := data.(type) {
 	// Handle objects, recursively
-	case map[string]interface{}:
+	case map[string]any:
 		for k, val := range v {
 			newKey := k
 			if prefix != "" {
@@ -20,7 +20,7 @@ func flatten(data interface{}, prefix string, rows *[]Row) {
 			flatten(val, newKey, rows)
 		}
 	// Handle arrays, recursively
-	case []interface{}:
+	case []any:
 		for i, val := range v {
 			newKey := fmt.Sprintf("%s.%d", prefix, i)
 			flatten(val, newKey, rows)
