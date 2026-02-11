@@ -36,6 +36,19 @@ func (c *Client) ReadSheetRows(spreadsheetID string, sheetRange string) ([][]any
 	return res.Values, nil
 }
 
+func (c *Client) WriteSheetRows(spreadsheetID string, sheetRange string, values [][]any) error {
+	vr := &sheets.ValueRange{
+		Values: values,
+	}
+	_, err := c.service.Spreadsheets.Values.Update(spreadsheetID, sheetRange, vr).
+		ValueInputOption("RAW").
+		Do()
+	if err != nil {
+		return fmt.Errorf("unable to update spreadsheet: %w", err)
+	}
+	return nil
+}
+
 func (c *Client) Test() {
 	fmt.Println("Hello")
 }
