@@ -2,6 +2,8 @@ module go-sheet-json
 
 go 1.25.4
 
+require gopkg.in/yaml.v3 v3.0.1
+
 require (
 	cloud.google.com/go/auth v0.18.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
