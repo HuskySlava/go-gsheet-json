@@ -18,18 +18,18 @@ var toGSheetCommand = &cobra.Command{
 }
 
 var fromFileName string
-var sheetID string
-var sheetRange string
+var fromSheetID string
+var fromSheetRange string
 
 func init() {
 	rootCmd.AddCommand(toGSheetCommand)
 	toGSheetCommand.Flags().StringVarP(&fromFileName, "file", "f", "", ".json input filename")
 	_ = toGSheetCommand.MarkFlagRequired("file")
 
-	toGSheetCommand.Flags().StringVarP(&sheetID, "sheet", "s", "", "Google sheet ID")
+	toGSheetCommand.Flags().StringVarP(&fromSheetID, "sheet", "s", "", "Google sheet ID")
 	_ = toGSheetCommand.MarkFlagRequired("sheet")
 
-	toGSheetCommand.Flags().StringVarP(&sheetRange, "range", "r", "", "Google sheet range")
+	toGSheetCommand.Flags().StringVarP(&fromSheetRange, "range", "r", "", "Google sheet range")
 	_ = toGSheetCommand.MarkFlagRequired("range")
 }
 
@@ -56,7 +56,7 @@ func toGSheet(cmd *cobra.Command, args []string) {
 		log.Fatal("Failed to connect to google sheet: ", err)
 	}
 
-	err = c.WriteSheetRows(sheetID, sheetRange, convert.RowsToSlices(flatten))
+	err = c.WriteSheetRows(fromSheetID, fromSheetRange, convert.RowsToSlices(flatten))
 	if err != nil {
 		log.Fatal("Failed writing to google sheet: ", err)
 	}
