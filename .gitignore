@@ -3,6 +3,7 @@
 
 # Enviromet
 .env
+credentials.json
 
 # IDE
 .idea
