@@ -1,0 +1,18 @@
+badjson {
+    "a": "a",s
+    brokenjson
+    "b": "b",
+    "c": {
+        "a": "c a",
+        "b": "c b",
+        "c": "c c",
+        "d": {asda,
+            brokenjson
+            "a": "c d a",
+            "b": "c d b",
+            "c": "c d c"
+        }
+    },
+    "d": "d",
+    "e": ["a", "b", "c"]
+} brokenjson
