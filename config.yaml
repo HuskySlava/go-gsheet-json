@@ -1,2 +1,2 @@
-timeout: 30
+timeout: 30s
 googleServiceAccountFilePath: credentials.json
