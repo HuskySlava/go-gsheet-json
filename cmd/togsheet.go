@@ -29,7 +29,7 @@ func init() {
 	toGSheetCommand.Flags().StringVarP(&toSheetID, "sheet", "s", "", "Google sheet ID")
 	_ = toGSheetCommand.MarkFlagRequired("sheet")
 
-	toGSheetCommand.Flags().StringVarP(&toSheetRange, "range", "r", "", "Google sheet range")
+	toGSheetCommand.Flags().StringVarP(&toSheetRange, "range", "r", "", "Google sheet range - The A1 notation https://developers.google.com/workspace/sheets/api/guides/concepts#cell")
 	_ = toGSheetCommand.MarkFlagRequired("range")
 }
 
