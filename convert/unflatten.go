@@ -3,6 +3,8 @@ package convert
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -35,7 +37,58 @@ func UnflattenRowsToJSON(rows [][]any) ([]byte, error) {
 		current[parts[len(parts)-1]] = value
 	}
 
-	return json.MarshalIndent(root, "", "  ")
+	converted := mapsToSlices(root)
+
+	return json.MarshalIndent(converted, "", "  ")
+}
+
+// mapsToSlices recursively walks the tree and converts maps whose keys
+// are all consecutive integers starting from 0 into slices.
+func mapsToSlices(data any) any {
+	m, ok := data.(map[string]any)
+	if !ok {
+		return data
+	}
+
+	// Recurse first so children are converted before we inspect this level
+	for k, v := range m {
+		m[k] = mapsToSlices(v)
+	}
+
+	if !isSequentialIntKeys(m) {
+		return m
+	}
+
+	slice := make([]any, len(m))
+	for k, v := range m {
+		i, _ := strconv.Atoi(k)
+		slice[i] = v
+	}
+	return slice
+}
+
+// isSequentialIntKeys returns true if all keys are integers 0..len-1.
+func isSequentialIntKeys(m map[string]any) bool {
+	if len(m) == 0 {
+		return false
+	}
+
+	keys := make([]int, 0, len(m))
+	for k := range m {
+		n, err := strconv.Atoi(k)
+		if err != nil {
+			return false
+		}
+		keys = append(keys, n)
+	}
+
+	sort.Ints(keys)
+	for i, k := range keys {
+		if k != i {
+			return false
+		}
+	}
+	return true
 }
 
 func validateRows(rows [][]any) error {
