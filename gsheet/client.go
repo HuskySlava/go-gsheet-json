@@ -48,7 +48,3 @@ func (c *Client) WriteSheetRows(spreadsheetID string, sheetRange string, values 
 	}
 	return nil
 }
-
-func (c *Client) Test() {
-	fmt.Println("Hello")
-}
