@@ -1,7 +1,5 @@
 package convert
 
-//type RawRow []any
-
 type Row struct {
 	Key   string
 	Value any
